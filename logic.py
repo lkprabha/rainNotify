@@ -1,23 +1,36 @@
+import self as self
+from lxml import etree
 from selenium import webdriver
 
-browser = webdriver.Chrome()
-url = "https://www.accuweather.com/en/sg/singapore/300597/daily-weather-forecast/300597?day=1"
-browser.get(url)
+#Asign web page in to etree structure
+class PageWithListings:
+    def __init__(self, page_source):
+        self.tree = etree.HTML(page_source)
 
-element_xpath = "//div[@class='right']/p[@class='panel-item']/span[@class='value']"
+   def get_listings(self):
+       result_Locator =  "//div[@class='right']/p[@class='panel-item']/span[@class='value']"
+       result_divs = self.tree.findall(result_Locator)
+       return result_divs
 
-element_precipitation_Tuple = browser.find_element_by_xpath(element_xpath)
-element_value = (element_precipitation_Tuple).text
-element_substring_float = float(element_value[:-2])
+  def RainAmount(self, rainmm):
+        rainmm = self.result_divs[0].text
+        return rainmm
 
-print(float(element_substring_float))
+ if __name__ == '__main__':
+    browser = webdriver.Chrome()
+    browser.get("https://www.accuweather.com/en/sg/singapore/300597/daily-weather-forecast/300597?day=1")
+    html = browser.page_source
 
-if element_substring_float > 0:
-    print("Today is a RAINY DAY Precipitation is  : ", element_value)
-else:
-    print("To day is a sunny Day :) ")
+    listings_page = PageWithListings(html)
 
-print("test")
+  #  rainFall
+    if RainAmount() > 0:
+            print("To day is a rainy day and precipitation is: ",RainAmount().text)
+    else:
+        print("To day is a sunny day!")
+browser.quit()
+
+
 
 
 
