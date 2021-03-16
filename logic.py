@@ -17,6 +17,7 @@ if element_substring_float > 0:
 else:
     print("To day is a sunny Day :) ")
 
+print("test")
 
 
 
