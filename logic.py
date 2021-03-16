@@ -1,17 +1,23 @@
-
 from selenium import webdriver
-from bs4 import BeautifulSoup
-import requests
 
-#browser = webdriver.Chrome()
-#browser.get("https://www.accuweather.com/en/sg/singapore/300597/daily-weather-forecast/300597")
+browser = webdriver.Chrome()
+url = "https://www.accuweather.com/en/sg/singapore/300597/daily-weather-forecast/300597?day=1"
+browser.get(url)
 
-##$x("//div[@class='right']/p[@class='panel-item']/span[@class='value']")[1].textContent
+element_xpath = "//div[@class='right']/p[@class='panel-item']/span[@class='value']"
 
-url = "https://www.accuweather.com/en/sg/singapore/300597/daily-weather-forecast/300597"
-r = requests.get(url)
-data = r.text
-soup = BeautifulSoup(data, "html.parser")
-spanTxt=soup.find("p",
-span = soup.find("p", class="panel-item")
-print(span.text)
+element_precipitation_Tuple = browser.find_element_by_xpath(element_xpath)
+element_value = (element_precipitation_Tuple).text
+element_substring_float = float(element_value[:-2])
+
+print(float(element_substring_float))
+
+if element_substring_float > 0:
+    print("Today is a RAINY DAY Precipitation is  : ", element_value)
+else:
+    print("To day is a sunny Day :) ")
+
+
+
+
+
